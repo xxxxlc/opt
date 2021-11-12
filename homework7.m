@@ -109,3 +109,21 @@ legend('L','U');
 % function y = f(x)
 %     y = x * sqrt(1 - x ^ 2);
 % end
+%%
+syms x1 x2
+f = - x1 * sqrt(1 - x1 ^ 2);
+g = [];
+history = cuting_plan(f, g, [0.01], [0], [0.9]);
+%%
+% syms x1 x2
+% f = - x1 * x2;
+% g = x1^2 + x2^2 - 1;
+plot3Df(@f1,@f2,100,[-1,-1],[1,1],1,[1 1 1 2 ;1 2 3 4],['1','2'])
+
+function y = f1(x)
+    y = -x(1) * x(2);
+end
+
+function y = f2(x)
+    y = x(1)^2 + x(2)^2 - 1;
+end
