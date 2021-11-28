@@ -7,8 +7,9 @@ options = saoptimset('OutputFcn',@outfun,'Display', 'iter', 'PlotFcns',{
 lb = 0;
 lu = 1;
 x0 = 1;
+global history
 history.x = [];
-history.opt = [];
+history.t = [];
 [x, fval, exitflag, output] = simulannealbnd(@fun1, x0, lb, lu, options);
 
 x_domain = 0:0.001:1;
@@ -19,7 +20,13 @@ xlabel('x');
 ylabel('f(x)');
 title('函数图像');
 
-
+x_iter = 1:1:size(history.x, 2);
+figure(3);
+plot(x_iter, history.t);
+title('temperature function');
+figure(4);
+plot(x_iter, history.x);
+title('current iteration point');
 %% 遗传算法
 clear all;
 x1_domain = linspace(-6, 6, 200);
@@ -30,9 +37,9 @@ for i = 1:1:size(X1, 1)
         z(i, j) = func2([X1(i, j), X2(i, j)]);
     end
 end
-figure(3)
+figure(5)
 surf(X1, X2, z);
-figure(4)
+figure(6)
 ct = contour(X1, X2, z, 100);
 options = optimoptions('ga','ConstraintTolerance',1e-6,'PlotFcn', ...
                        {@gaplotbestf, @gaplotbestindiv, ...
@@ -41,6 +48,8 @@ options = optimoptions('ga','ConstraintTolerance',1e-6,'PlotFcn', ...
                        @gaplotselection, @gaplotscorediversity, ...
                        @gaplotscores, @gaplotstopping});
 x = ga(@func2, 2, [], [], [], [], [-6 0], [0 6], [],options);
+%%
+genetic_algorithm(@func2, 2, [], [], [], [], [-6 0], [0 6], []);
 
 %% 求解函数
 function y = fun1(x)
@@ -53,13 +62,18 @@ function y = func2(x)
         - (x(1) + x(2) .^ 2 - 7) .^ 2) ./ 2186;  
 end
 
-function stop = outfun(x,optimValues,state)
-    stop = False;
+function [stop, optnew, changed] = outfun(x,optold,state)
+    stop = false;
+    optnew = optold;
+    changed = false;
     switch state
         case 'init'
               % Setup for plots or dialog boxes
         case 'iter'
               % Make updates to plots or dialog boxes as needed
+              global history
+              history.x = [history.x, optold.x];
+              history.t = [history.t, optold.temperature];
         case 'interrupt'
               % Check conditions to see whether optimization 
               % should quit

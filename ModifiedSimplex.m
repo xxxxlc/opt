@@ -29,5 +29,6 @@ f = [0  0  0  0  0    1  1  1    0  0  0  0  0    0  0  0    1  1  1  1  1]';
 m = size(Aeq, 2);
 lb = zeros(m,1);
 options = optimoptions('linprog','Algorithm','dual-simplex','Display','iter');
-x = linprog(f,[],[],Aeq,beq,lb,[],options);
+%%[x, fval, exitflag, output]= linprog(f,[],[],Aeq,beq,lb,[],options);
 %% 画图
+[x, fval]= dual_simplex(f,[],[],Aeq,beq,lb,[]);
