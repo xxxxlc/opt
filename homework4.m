@@ -6,10 +6,10 @@ H0 = [110, -6; -6, 18];
 x0 = [0;0];
 m = 2;
 k = 20;
-[X1, H1, F1, G1,HN1] = Newton(f,H0,x0,m,k);
-[X2, H2, F2, G2,HN2] = LM(f,H0,x0,m,k);
-[X3, H3, F3, G3,HN3] = BFGS(f,H0,x0,m,k);
-[X4, H4, F4, G4,HN4] = DFP(f,H0,x0,m,k);
+[X1, H1, F1, G1, HN1] = Newton(f,H0,x0,m,k);
+[X2, H2, F2, G2, HN2] = LM(f,H0,x0,m,k);
+[X3, H3, F3, G3, HN3] = BFGS(f,H0,x0,m,k);
+[X4, H4, F4, G4, HN4] = DFP(f,H0,x0,m,k);
 
 figure(1);
 coordinate_x = 1:1:size(X1,2);
